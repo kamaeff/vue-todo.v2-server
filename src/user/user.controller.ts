@@ -10,13 +10,14 @@ import {
   Get,
   Param,
   Delete,
+  Put,
 } from "@nestjs/common";
 import {UserService} from "./user.service";
 import {
+  UserAddTaskRequestDto,
   UserLoginRequestDto,
   UserLoginResponseDto,
   UserRegisterRequestDto,
-  UserUpdateRequestDto,
 } from "src/types/user.dto";
 import {JwtAuthGuard} from "src/auth/jwt-auth.guard";
 import {Tasks} from "@prisma/client";
@@ -41,13 +42,20 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post("update")
+  @Post(":id/add")
   async updateUser(
-    @Body() dto: UserUpdateRequestDto,
+    @Body() dto: UserAddTaskRequestDto,
     @Request() req: {user: {userId: string}},
   ): Promise<any> {
     const userId = req.user.userId;
-    return this.userService.updateUser(userId, dto);
+    console.log(userId, dto);
+    return this.userService.addTask(userId, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put("update/:task_id")
+  async updateTask(@Body() dto: Tasks): Promise<any> {
+    return this.userService.updateTask(dto);
   }
 
   @UseGuards(JwtAuthGuard)
