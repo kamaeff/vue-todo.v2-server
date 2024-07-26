@@ -1,4 +1,4 @@
-import {IsString, MinLength} from "class-validator";
+import {IsArray, IsOptional, IsString, MinLength} from "class-validator";
 import {Tasks} from "./tasks.dto";
 
 export class UserLoginRequestDto {
@@ -18,6 +18,20 @@ export class UserLoginResponseDto {
     name: string;
     tasks: Tasks[];
   };
+}
+
+export class UserUpdateRequestDto {
+  @IsOptional()
+  @IsString()
+  username?: string;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsArray()
+  tasks?: Tasks[];
 }
 
 export class UserRegisterRequestDto {

@@ -5,6 +5,7 @@ export class Tasks {
   title: string;
   subtext: string;
   priority: string;
+  status: string;
   date: string;
   user_id: number;
 }
