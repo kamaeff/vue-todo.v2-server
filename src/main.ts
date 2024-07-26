@@ -1,20 +1,26 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import {NestFactory} from "@nestjs/core";
+import {AppModule} from "./app.module";
 import * as dotenv from "dotenv";
+import * as fs from "fs";
+import * as https from "https";
 
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // const httpsOptions = {
+  //   key: fs.readFileSync("/etc/letsencrypt/live/kamaeff-site.ru/privkey.pem"),
+  //   cert: fs.readFileSync(
+  //     "/etc/letsencrypt/live/kamaeff-site.ru/fullchain.pem",
+  //   ),
+  // };
 
-  app.setGlobalPrefix("api");
-
-  app.enableCors({
-    origin: 'http://localhost:5123', // Разрешает запросы только с этого источника
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+  const app = await NestFactory.create(AppModule, {
+    // httpsOptions,
   });
 
+  app.setGlobalPrefix("api");
+  app.enableCors();
   await app.listen(4200);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
